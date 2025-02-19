@@ -1,0 +1,27 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:5000"
+    container_name: cats_app
+    restart: always
+    networks:
+      - cats-networks
+
+  mongo:
+    image: mongo:8.0
+    container_name: mydb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mydbdata:/data/db
+    networks:
+      - cats-networks
+
+networks:
+  cats-networks:
+    driver: bridge
+
+volumes:
+  mydbdata:
