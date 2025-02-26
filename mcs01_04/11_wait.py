@@ -2,7 +2,7 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 import requests
-from requests.exceptions import InvalidSchema, MissingSchema, SSLError
+from requests.exceptions import InvalidSchema, MissingSchema, SSLError, ConnectionError
 
 from timing import async_timed, sync_timed
 
@@ -14,8 +14,8 @@ urls = [
     "https://app.amplitude.com/",
     "https://www.youtube.com/",
     "https://tabletki.ua",
-    "asdf",
-    "ws://test.com",
+    # "asdf",
+    # "ws://test.com",
     "https://stackoverflow.com/",
 ]
 
@@ -24,7 +24,7 @@ def get_preview(url: str) -> tuple[str, str] | None:
     try:
         res = requests.get(url)
         return url, res.text[:25]
-    except (InvalidSchema, MissingSchema, SSLError) as err:
+    except (InvalidSchema, MissingSchema, SSLError, ConnectionError) as err:
         return None
 
 

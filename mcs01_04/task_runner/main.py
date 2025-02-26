@@ -26,7 +26,7 @@ async def consumer(filename, q: asyncio.Queue):
 async def main():
 
     queue_files = asyncio.Queue()
-    list_files = AsyncPath(".").joinpath("files").glob("*.js")
+    list_files = AsyncPath(".").joinpath("files").glob("**/*.js")
 
     producer_tasks = [asyncio.create_task(producer(file, queue_files)) async for file in list_files]
     consumer_task = asyncio.create_task(consumer("main.js", queue_files))

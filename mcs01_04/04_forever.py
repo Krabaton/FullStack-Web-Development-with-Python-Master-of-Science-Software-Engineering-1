@@ -3,10 +3,12 @@ import random
 
 
 async def ping(signal):
+    await asyncio.sleep(0)
     print(f"Pinging {signal}")
 
 
 async def boo():
+    await asyncio.sleep(0)
     print(f"RUN  BOO")
 
 

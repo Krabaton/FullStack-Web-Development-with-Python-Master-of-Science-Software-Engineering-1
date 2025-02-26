@@ -4,7 +4,7 @@ import logging
 import httpx
 import websockets
 import names
-from websockets import WebSocketServerProtocol
+from websockets import ServerProtocol
 from websockets.exceptions import ConnectionClosedOK
 
 logging.basicConfig(level=logging.INFO)
@@ -29,12 +29,12 @@ async def get_exchange():
 class Server:
     clients = set()
 
-    async def register(self, ws: WebSocketServerProtocol):
+    async def register(self, ws: ServerProtocol):
         ws.name = names.get_full_name()
         self.clients.add(ws)
         logging.info(f'{ws.remote_address} connects')
 
-    async def unregister(self, ws: WebSocketServerProtocol):
+    async def unregister(self, ws: ServerProtocol):
         self.clients.remove(ws)
         logging.info(f'{ws.remote_address} disconnects')
 
@@ -42,7 +42,7 @@ class Server:
         if self.clients:
             [await client.send(message) for client in self.clients]
 
-    async def ws_handler(self, ws: WebSocketServerProtocol):
+    async def ws_handler(self, ws: ServerProtocol):
         await self.register(ws)
         try:
             await self.distrubute(ws)
@@ -51,7 +51,7 @@ class Server:
         finally:
             await self.unregister(ws)
 
-    async def distrubute(self, ws: WebSocketServerProtocol):
+    async def distrubute(self, ws: ServerProtocol):
         async for message in ws:
             if message == "exchange":
                 exchange = await get_exchange()

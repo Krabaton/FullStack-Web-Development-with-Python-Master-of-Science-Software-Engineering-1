@@ -1,5 +1,5 @@
 from functools import wraps
-from time import time
+from time import perf_counter
 
 
 def async_timed(name: str = None):
@@ -9,11 +9,11 @@ def async_timed(name: str = None):
     def wrapper(func):
         @wraps(func)
         async def wrapped(*args, **kwargs):
-            start = time()
+            start = perf_counter()
             try:
                 return await func(*args, **kwargs)
             finally:
-                print(time() - start)
+                print(perf_counter() - start)
 
         return wrapped
 
@@ -27,11 +27,11 @@ def sync_timed(name: str = None):
     def wrapper(func):
         @wraps(func)
         def wrapped(*args, **kwargs):
-            start = time()
+            start = perf_counter()
             try:
                 return func(*args, **kwargs)
             finally:
-                print(time() - start)
+                print(perf_counter() - start)
 
         return wrapped
 

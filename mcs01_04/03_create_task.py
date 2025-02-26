@@ -5,8 +5,10 @@ from faker import Faker
 
 fake = Faker("uk-UA")  # en-GB
 
-# Awaitable -> Coroutine
-# Awaitable -> Future -> Task
+# Awaitable
+# ├── Coroutine
+# └── Future
+#     └── Task
 
 
 async def async_get_user_from_db(uuid: int):
@@ -26,9 +28,9 @@ async def main():
 
 if __name__ == "__main__":
     start = time()
-    users = asyncio.run(main())
-    # loop = asyncio.new_event_loop()
-    # asyncio.set_event_loop(loop)
-    # users = loop.run_until_complete(main())
+    # users = asyncio.run(main())
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    users = loop.run_until_complete(main())
     print(users)
     print(time() - start)

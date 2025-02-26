@@ -2,7 +2,7 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 import requests
-from requests.exceptions import InvalidSchema, MissingSchema, SSLError
+from requests.exceptions import InvalidSchema, MissingSchema, SSLError, ConnectionError
 
 from timing import async_timed, sync_timed
 
@@ -31,7 +31,7 @@ def main_sync():
     for url in urls:
         try:
             results.append(get_preview(url))
-        except (InvalidSchema, MissingSchema, SSLError) as err:
+        except (InvalidSchema, MissingSchema, SSLError, ConnectionError) as err:
             print(err)
 
     return results
@@ -51,6 +51,7 @@ if __name__ == "__main__":
     print(main_sync())
 
     r: list = asyncio.run(main())
+    print(r)
     new_result = []
     for el in r:
         if isinstance(el, Exception):

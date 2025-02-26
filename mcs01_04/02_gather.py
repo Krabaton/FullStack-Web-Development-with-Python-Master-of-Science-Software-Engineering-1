@@ -1,5 +1,5 @@
 import asyncio
-from time import sleep, time
+from time import sleep, time, perf_counter
 
 from faker import Faker
 
@@ -20,18 +20,18 @@ async def main():
     users = []
     for i in range(1, 6):
         users.append(async_get_user_from_db(i))
-    result = await asyncio.gather(*users)
+    result = await asyncio.gather(*users)  # Promise.all
     return result
 
 
 if __name__ == "__main__":
-    start = time()
+    start = perf_counter()
     for i in range(1, 6):
         user = get_user_from_db(i)
         print(user)
-    print(time() - start)
+    print(perf_counter() - start)
 
-    start = time()
+    start = perf_counter()
     users = asyncio.run(main())
     print(users)
-    print(time() - start)
+    print(perf_counter() - start)
