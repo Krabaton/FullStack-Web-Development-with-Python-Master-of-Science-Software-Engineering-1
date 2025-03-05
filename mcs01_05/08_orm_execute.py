@@ -171,12 +171,13 @@ def demonstrate_queries():
                 salary=Employee.salary * 1.1  # Збільшення на 10%
             )
             session.execute(update_stmt)
+            session.commit()
+
             stmt = select(Employee).join(Department).where(Department.name == "Підтримка")
             result = session.execute(stmt)
             for employee in result.scalars():
                 print(f"  {employee.name}: нова зарплата {employee.salary}")
 
-            session.commit()
 
             # 8. Виконання текстового SQL запиту
             print("\n8. Виконання текстового SQL запиту:")
@@ -186,9 +187,9 @@ def demonstrate_queries():
                 JOIN departments d ON e.department_id = d.id
                 WHERE e.hire_date < :cutoff_date
                 ORDER BY e.salary DESC
-                LIMIT 3
+                LIMIT :limit
             """)
-            result = session.execute(stmt, {"cutoff_date": date(2020, 1, 1)})
+            result = session.execute(stmt, {"cutoff_date": date(2020, 1, 1), "limit": 4})
             for row in result:
                 print(f"  {row.name}: {row.salary} ({row.department})")
 

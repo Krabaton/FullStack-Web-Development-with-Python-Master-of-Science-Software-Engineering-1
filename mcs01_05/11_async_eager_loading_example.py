@@ -161,7 +161,7 @@ async def eager_loading_demo():
         # вимикаємо виведення SQL, щоби було легше спостерігати загальну кількість запитів
         engine.echo = False
 
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         # виконуємо запит з явним використанням eager loading для книг і жанрів
         # тут selectinload(Author.books) підтягне усі книги,
@@ -180,7 +180,6 @@ async def eager_loading_demo():
 
         # тут буде один великий або декілька великих запитів,
         # але не “пачка” дрібних, як було б у випадку lazy loading
-        query_count = 1  # приблизно, хоча насправді залежить від СУБД і деталей SQLAlchemy
 
         print(f"\nОтримали авторів зі всіма потрібними пов'язаними даними (книги та жанри).")
         for author in authors:
@@ -195,10 +194,9 @@ async def eager_loading_demo():
                 genre_names = [bg.genre.name for bg in book_genres]  # bg.genre теж готовий
                 print(f"      Жанри: {', '.join(genre_names)}")
 
-        end_time = time.time()
+        end_time = time.perf_counter()
         execution_time = end_time - start_time
 
-        print(f"\nЗагальна кількість запитів (орієнтовно): {query_count}")
         print(f"Час виконання: {execution_time:.6f} секунд")
 
         # повертаємо виведення SQL

@@ -5,7 +5,7 @@ from sqlalchemy.orm import DeclarativeBase, relationship, Session, Mapped, mappe
 import time
 
 # Створення двигуна
-engine = create_engine("sqlite:///lazy_loading.db", echo=False)
+engine = create_engine("sqlite:///lazy_loading.db", echo=True)
 
 
 # Базовий клас моделі
@@ -156,10 +156,10 @@ def lazy_loading_demo():
 
     with Session(engine) as session:
         # Тимчасово вимикаємо виведення SQL для чистоти виводу
-        engine.echo = False
+        # engine.echo = False
 
         print("\nОтримання всіх авторів (1 запит)")
-        start_time = time.time()
+        start_time = time.perf_counter()
         stmt = select(Author)
         authors = session.scalars(stmt).all()
 
@@ -191,7 +191,7 @@ def lazy_loading_demo():
 
                 print(f"      Жанри: {', '.join(genre_names)}")
 
-        end_time = time.time()
+        end_time = time.perf_counter()
         execution_time = end_time - start_time
 
         print(f"\nЗагальна кількість запитів: {query_count}")

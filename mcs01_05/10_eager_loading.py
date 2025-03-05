@@ -172,7 +172,7 @@ def compare_loading_strategies():
         # 1. Lazy loading (за замовчуванням)
         print("\n1. Lazy Loading (за замовчуванням)")
         print("--------------------------------------")
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         stmt = select(Author)
         authors = session.scalars(stmt).all()
@@ -182,7 +182,7 @@ def compare_loading_strategies():
                 for book_genre in book.genres:
                     _ = book_genre.genre.name
 
-        end_time = time.time()
+        end_time = time.perf_counter()
         lazy_time = end_time - start_time
         print(f"Час виконання: {lazy_time:.6f} секунд")
 
@@ -190,7 +190,7 @@ def compare_loading_strategies():
         # 2. Eager loading з joinedload
         print("\n2. Eager Loading з joinedload()")
         print("--------------------------------------")
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         # Завантаження авторів разом з книгами та жанрами
         stmt = select(Author).options(
@@ -206,7 +206,7 @@ def compare_loading_strategies():
                 for book_genre in book.genres:
                     _ = book_genre.genre.name
 
-        end_time = time.time()
+        end_time = time.perf_counter()
         joined_time = end_time - start_time
         print(f"Час виконання: {joined_time:.6f} секунд")
 
@@ -214,7 +214,7 @@ def compare_loading_strategies():
         # 3. Eager loading з subqueryload
         print("\n3. Eager Loading з subqueryload()")
         print("--------------------------------------")
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         # Завантаження авторів разом з книгами та жанрами
         stmt = select(Author).options(
@@ -228,7 +228,7 @@ def compare_loading_strategies():
                 for book_genre in book.genres:
                     _ = book_genre.genre.name
 
-        end_time = time.time()
+        end_time = time.perf_counter()
         subquery_time = end_time - start_time
         print(f"Час виконання: {subquery_time:.6f} секунд")
 
@@ -236,7 +236,7 @@ def compare_loading_strategies():
         # 4. Eager loading з selectinload
         print("\n4. Eager Loading з selectinload()")
         print("--------------------------------------")
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         # Завантаження авторів разом з книгами та жанрами
         stmt = select(Author).options(
@@ -250,7 +250,7 @@ def compare_loading_strategies():
                 for book_genre in book.genres:
                     _ = book_genre.genre.name
 
-        end_time = time.time()
+        end_time = time.perf_counter()
         selectin_time = end_time - start_time
         print(f"Час виконання: {selectin_time:.6f} секунд")
 
@@ -262,7 +262,7 @@ def compare_loading_strategies():
     with Session(engine) as session:
         print("\n5. Комбінована стратегія (рекомендовано)")
         print("--------------------------------------")
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         # Використання різних стратегій для різних зв'язків:
         # - joinedload для багато-до-одного (BookGenre -> Genre)
@@ -274,7 +274,7 @@ def compare_loading_strategies():
 
         print_author_info(authors)
 
-        end_time = time.time()
+        end_time = time.perf_counter()
         combined_time = end_time - start_time
         print(f"Час виконання: {combined_time:.6f} секунд")
 
