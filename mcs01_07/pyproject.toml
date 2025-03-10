@@ -11,6 +11,7 @@ sqlalchemy = "^2.0.38"
 faker = "^36.1.1"
 psycopg2 = "^2.9.10"
 alembic = "^1.15.1"
+fastapi = {extras = ["standard"], version = "^0.115.11"}
 
 
 [build-system]
